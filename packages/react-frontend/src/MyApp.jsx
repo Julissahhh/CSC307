@@ -12,6 +12,7 @@ function MyApp() {
         });
         setCharacters(updated);
       }
+      
       function updateList(person) {
         setCharacters([...characters, person]);
       }
