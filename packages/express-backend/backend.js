@@ -41,8 +41,31 @@ const findUserByName = (name) => {
     );
 };
 
+  
+  app.get("/users", (req, res) => {
+    const name = req.query.name;
+    if (name != undefined) {
+      let result = findUserByName(name);
+      result = { users_list: result };
+      res.send(result);
+    } else {
+      res.send(users);
+    }
+  });
+
+  app.post("/users", (req, res) => {
+    const userToAdd = req.body;
+    addUser(userToAdd);
+    res.send();
+  });
+
 const findUserById = (id) =>
     users["users_list"].find((user) => user["id"] === id);
+
+const addUser = (user) => {
+    users["users_list"].push(user);
+    return user;
+  };
 
 app.get("/users/:id", (req, res) => {
     const id = req.params["id"]; //or req.params.id
