@@ -35,6 +35,10 @@ const users = {
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 const findUserByName = (name) => {
   return users["users_list"].filter(
     (user) => user["name"] === name
@@ -79,8 +83,8 @@ const findUserByNameAndJob = (name, job) => {
     res.send();
   });
 
-  app.delete("/users", (req, res) => {
-    const userToDelete = req.body;
+  app.delete("/users/:id", (req, res) => {
+    const userToDelete = req.params["id"];
     DeleteUser(userToDelete);
     res.send();
   });
