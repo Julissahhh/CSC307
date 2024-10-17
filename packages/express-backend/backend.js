@@ -81,14 +81,21 @@ const findUserByNameAndJob = (name, job) => {
 
   app.post("/users", (req, res) => {
     const userToAdd = req.body;
+    const id = (Math.round(Math.random()*1000)).toString();
+    userToAdd.id = id
     addUser(userToAdd);
-    res.send();
+    res.status(201).send(userToAdd)
   });
 
   app.delete("/users/:id", (req, res) => {
     const userToDelete = req.params["id"];
-    DeleteUser(userToDelete);
-    res.send();
+    const deletedUser = DeleteUser(userToDelete);
+    if (deletedUser) {
+      res.status(204).send();
+    } else {
+      res.status(404).send({ message: "User not found" });
+    }
+
   });
 
   const DeleteUser = (userId) => {

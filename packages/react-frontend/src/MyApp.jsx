@@ -7,15 +7,46 @@ function MyApp() {
   const [characters, setCharacters] = useState([]);
 
   function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
-    });
-    setCharacters(updated);
-  }
+    const id = characters[index].id
+    console.log(id)
+    fetch((`http://localhost:8000/users/${id}`), {
+      method: "DELETE"
+    })
+      // console.log("here")
+      .then((res) => {
+        if (res.status === 204) {
+          console.log("removed")
+          const updated = characters.filter((character, i) => i !== index);
+          setCharacters(updated);
+        } else if (res.status === 404) {
+          console.log("Resource not found");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-  // function updateList(person) {
-  //   setCharacters([...characters, person]);
+  }
+    
+  //   .then((res) => {
+  //     if (res.status === 204){
+  //       const updated = characters.filter((character, i) => {
+  //           return i !== index;
+  //         });
+  //         setCharacters(updated);
+  //     }
+  //     else if(res.status === 404){
+  //       console.log("resource not found")
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.log(error);
+  //   });
   // }
+
+  function updateList(person) {
+    setCharacters([...characters, person]);
+  }
 
   function fetchUsers() {
     const promise = fetch("http://localhost:8000/users");
